@@ -1,45 +1,57 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
+using System;
+using System.Collections.Generic;
 
 namespace Slay_Your_Vegetables
-
 {
-    internal class Weapons
+    public enum WeaponType
+    {
+        Knife,
+        Axe,
+        Torch,
+        Blender
+    }
+
+    public class Enemy
     {
         public string Name;
-        public int AttackPower;
-        public Texture2D texture;
-        public Vector2 position;
-        public void Attack(){}
-        public void Ulti(){}
-        
-        
+        public float Health;
+        public float Position; 
 
-    }
-    internal class Knife:Weapons
-    {
-        public Knife()
+        public Enemy(string name, float health, float position)
         {
-            Name= "Knife";
-            AttackPower= 25;
-            
+            Name = name;
+            Health = health;
+            Position = position;
         }
-        
-        public int Attack(Knife knife,Enemy enemy)
+        // Is the enemy still alive?
+        public void TakeDamage(float damage)
         {
-            enemy.CurrentHP-=knife.AttackPower;
-            return enemy.CurrentHP;
+            Health -= damage;
+            Console.WriteLine($"{Name} took {damage} damage. Remaining HP: {Health}");
 
+            if (Health <= 0)
+                Console.WriteLine($"{Name} has been destroyed!");
+        }
+        // Used for Blender ultimate (pushes enemies back)  
+        public void PushBack(float distance)
+        {
+            Position += distance;
+            Console.WriteLine($"{Name} was pushed back -> New position: {Position}");
         }
     }
-    internal class Torch: Weapons
-    {
-        
-    }
-    internal class Blender:Weapons
-    {
-        
-    }
 
+    public class Weapons
+    {
+        public WeaponType CurrentWeapon;
+
+        // DAMAGE VALUES FOR EACH WEAPON 
+        private float knifeDamage = 50f;
+        private float axeStartDamage = 75f;
+        private float torchSmallDamage = 15f;
+        private float torchBigDamage = 40f;
+        private float blenderDamage = 30f;
+
+
+    
+    }
 }
